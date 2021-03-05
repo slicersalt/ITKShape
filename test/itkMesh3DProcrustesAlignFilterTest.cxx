@@ -16,22 +16,15 @@
  *
  *=========================================================================*/
 
-#include "itkMinimalStandardRandomVariateGenerator.h"
+#include "itkMesh3DProcrustesAlignFilter.h"
 
-#include "itkTestingMacros.h"
-#include "itkMath.h"
-
-int
-itkMinimalStandardRandomVariateGeneratorTest(int, char *[])
+int itkMesh3DProcrustesAlignFilterTest(int argc, char* argv[])
 {
-  typedef itk::Statistics::MinimalStandardRandomVariateGenerator GeneratorType;
-  GeneratorType::Pointer                                         generator = GeneratorType::New();
+    using MeshType = itk::Mesh<float, 3>;
+    using FilterType = itk::Mesh3DProcrustesAlignFilter<MeshType, MeshType>;
 
-  ITK_EXERCISE_BASIC_OBJECT_METHODS(generator, MinimalStandardRandomVariateGenerator, RandomVariateGeneratorBase);
+    FilterType::Pointer filter = FilterType::New();
 
-  generator->Initialize(324);
-
-  ITK_TEST_EXPECT_TRUE(itk::Math::FloatAlmostEqual(generator->GetVariate(), 1.35581, 4, 0.0001));
-
-  return EXIT_SUCCESS;
+    // Empty test to verify build success
+    return EXIT_SUCCESS;
 }

@@ -14,9 +14,8 @@ file(READ "${MY_CURRENT_DIR}/README.rst" DOCUMENTATION)
 itk_module(Mesh3DProcrustesAlignFilter
   DEPENDS
     ITKCommon
-    ITKStatistics
-  COMPILE_DEPENDS
-    ITKImageSources
+    ITKMesh
+    ITKTransform
   TEST_DEPENDS
     ITKTestKernel
     ITKMetaIO
