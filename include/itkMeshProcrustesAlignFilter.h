@@ -56,7 +56,7 @@ namespace itk
 * change  Martin Styner, UNC support for single template and initialization with average
 * TODO: Enable/Disable Normalization of centering and scaling to origin
 * 
-* \ingroup MeshProcrustesAlignFilter
+* \ingroup Mesh3DProcrustesAlignFilter
 *
 */
 template <class TInputMesh, class TOutputMesh>
@@ -66,7 +66,7 @@ class ITK_TEMPLATE_EXPORT MeshProcrustesAlignFilter : public ProcessObject
 public:
 
   /** Standard typedefs. */
-  typedef MeshProcrustesAlignFilter Self;
+  typedef MeshProcrustesAlignFilter   Self;
   typedef ProcessObject               Superclass;
   typedef SmartPointer<Self>          Pointer;
   typedef SmartPointer<const Self>    ConstPointer;

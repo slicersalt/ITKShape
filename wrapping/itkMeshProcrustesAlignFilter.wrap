@@ -1,6 +1,6 @@
 itk_wrap_include("itkMesh.h")
 
-itk_wrap_class("itk::Mesh3DProcrustesAlignFilter" POINTER)
-    itk_wrap_template("MD3MD3PAF"
-        "itk::Mesh< double, 3>, itk::Mesh< double, 3>")
+itk_wrap_class("itk::MeshProcrustesAlignFilter" POINTER)
+    itk_wrap_template("M${ITKM_${t}}3M${ITKM_${t}}3"
+                        "itk::Mesh< ${ITKT_D}, 3>, itk::Mesh< ${ITKT_D}, 3>")
 itk_end_wrap_class()
