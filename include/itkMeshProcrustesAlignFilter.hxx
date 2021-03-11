@@ -16,17 +16,17 @@
  *
  *=========================================================================*/
 
-#ifndef itkMesh3DProcrustesAlignFilter_hxx
-#define itkMesh3DProcrustesAlignFilter_hxx
+#ifndef itkMeshProcrustesAlignFilter_hxx
+#define itkMeshProcrustesAlignFilter_hxx
 
-#include "itkMesh3DProcrustesAlignFilter.h"
+#include "itkMeshProcrustesAlignFilter.h"
 
 namespace itk
 {
 
 template <class TInputMesh, class TOutputMesh>
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
-::Mesh3DProcrustesAlignFilter()
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
+::MeshProcrustesAlignFilter()
 {
   m_Convergence = 0.0001;
   m_Mean = OutputMeshType::New();
@@ -40,22 +40,22 @@ Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
 }
 
 template <class TInputMesh, class TOutputMesh>
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
-::~Mesh3DProcrustesAlignFilter()
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
+::~MeshProcrustesAlignFilter()
 {
 }
 
 template <class TInputMesh, class TOutputMesh>
 typename itk::ProcessObject::DataObjectPointer
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::MakeOutput(itk::ProcessObject::DataObjectPointerArraySizeType /* idx */)
 {
   return static_cast<itk::ProcessObject::DataObjectPointer>(TOutputMesh::New().GetPointer() );
 }
 
 template <class TInputMesh, class TOutputMesh>
-typename Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>::OutputMeshType
-* Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+typename MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::OutputMeshType
+* MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::GetOutput(unsigned int idx)
   {
   return m_MeshTransform[idx]->GetOutput();
@@ -64,7 +64,7 @@ typename Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>::OutputMeshType
 
 template <class TInputMesh, class TOutputMesh>
 void
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::SetNumberOfInputs( unsigned int num )
 {
   this->ProcessObject::SetNumberOfIndexedInputs( num );
@@ -84,7 +84,7 @@ Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
 
 template <class TInputMesh, class TOutputMesh>
 void
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::SetInput( unsigned int idx, InputMeshPointer mesh )
 {
   this->ProcessObject::SetNthInput( idx, mesh );
@@ -93,7 +93,7 @@ Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
 
 template <class TInputMesh, class TOutputMesh>
 void
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::GenerateData()
 {
   // find mesh centers and store them
@@ -183,8 +183,8 @@ Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
 }
 
 template <class TInputMesh, class TOutputMesh>
-typename Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>::TranslationType
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+typename MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::TranslationType
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::GetMeshCenter( unsigned int idx )
 {
   TranslationType center;
@@ -205,8 +205,8 @@ Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
 }
 
 template <class TInputMesh, class TOutputMesh>
-typename Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>::TransformPointer
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+typename MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::TransformPointer
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::GetProcrustesMatch( unsigned int idx, OutputMeshPointer targetMesh, TranslationType targetCenter)
 {
   TransformPointer result = TransformType::New();
@@ -290,7 +290,7 @@ Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
 
 template <class TInputMesh, class TOutputMesh>
 void
-Mesh3DProcrustesAlignFilter<TInputMesh, TOutputMesh>
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 ::CalculateMean()
 {
   typename OutputMeshType::PointsContainer * meanPoints = m_Mean->GetPoints();

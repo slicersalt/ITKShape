@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-#include "itkMesh3DProcrustesAlignFilter.h"
+#include "itkMeshProcrustesAlignFilter.h"
 
-int itkMesh3DProcrustesAlignFilterTest(int argc, char* argv[])
+int itkMeshProcrustesAlignFilterTest(int argc, char* argv[])
 {
     using MeshType = itk::Mesh<float, 3>;
-    using FilterType = itk::Mesh3DProcrustesAlignFilter<MeshType, MeshType>;
+    using FilterType = itk::MeshProcrustesAlignFilter<MeshType, MeshType>;
 
     FilterType::Pointer filter = FilterType::New();
 
