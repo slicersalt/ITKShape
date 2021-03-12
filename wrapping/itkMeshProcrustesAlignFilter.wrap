@@ -1,6 +1,8 @@
 itk_wrap_include("itkMesh.h")
 
 itk_wrap_class("itk::MeshProcrustesAlignFilter" POINTER)
-    itk_wrap_template("M${ITKM_${t}}3M${ITKM_${t}}3"
-                        "itk::Mesh< ${ITKT_D}, 3>, itk::Mesh< ${ITKT_D}, 3>")
+  foreach(d ${ITK_WRAP_IMAGE_DIMS})
+    itk_wrap_template("M${ITKM_${t}}${d}M${ITKM_${t}}${d}"
+                        "itk::Mesh< ${ITKT_D}, ${d}>, itk::Mesh< ${ITKT_D}, ${d}>")
+  endforeach()
 itk_end_wrap_class()

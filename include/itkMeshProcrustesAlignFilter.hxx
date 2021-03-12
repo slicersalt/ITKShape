@@ -59,7 +59,6 @@ typename MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::OutputMeshType
 ::GetOutput(unsigned int idx)
   {
   return m_MeshTransform[idx]->GetOutput();
-  // return static_cast<TOutputMesh*>(this->ProcessObject::GetOutput(idx));
   }
 
 template <class TInputMesh, class TOutputMesh>
@@ -110,8 +109,6 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     OutputPointsContainerPointer OldMeanPoints =  m_OldMean->GetPoints();
     MeanPoints->Reserve(numPoints);
     OldMeanPoints->Reserve(numPoints);
-
-    // std::cout << m_Mean->GetNumberOfPoints() << "," << numPoints << std::endl;
     }
 
   OutputPointsContainer *meanPoints = m_Mean->GetPoints();

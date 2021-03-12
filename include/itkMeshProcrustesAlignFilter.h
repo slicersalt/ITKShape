@@ -128,7 +128,6 @@ public:
   TranslationType GetRotationDegrees( TransformType* transform )
   {
     Vector<CoordRepType, MeshDimension> eulerAngles = Vector<CoordRepType, MeshDimension>();
-    TranslationType rotationXYZ = transform->GetTranslation();
     RotationType    rotation = transform->GetMatrix();
     double          rotX, cosY, rotY, rotZ;
 
