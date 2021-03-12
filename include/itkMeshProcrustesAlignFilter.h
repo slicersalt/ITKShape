@@ -16,8 +16,8 @@
  *
  *=========================================================================*/
 
-#ifndef itkMesh3DProcrustesAlignFilter_h
-#define itkMesh3DProcrustesAlignFilter_h
+#ifndef itkMeshProcrustesAlignFilter_h
+#define itkMeshProcrustesAlignFilter_h
 
 #include "itkMacro.h"
 #include "itkProcessObject.h"
@@ -32,7 +32,7 @@
 
 namespace itk
 {
-/** \class Mesh3DProcrustesAlignFilter
+/** \class MeshProcrustesAlignFilter
 *   \brief Class for groupwise aligning a set of 3D meshes.
 *
 * All input meshes must have the same number of points (with corresponding
@@ -60,13 +60,13 @@ namespace itk
 *
 */
 template <class TInputMesh, class TOutputMesh>
-class ITK_TEMPLATE_EXPORT Mesh3DProcrustesAlignFilter : public ProcessObject
+class ITK_TEMPLATE_EXPORT MeshProcrustesAlignFilter : public ProcessObject
 {
 
 public:
 
   /** Standard typedefs. */
-  typedef Mesh3DProcrustesAlignFilter Self;
+  typedef MeshProcrustesAlignFilter   Self;
   typedef ProcessObject               Superclass;
   typedef SmartPointer<Self>          Pointer;
   typedef SmartPointer<const Self>    ConstPointer;
@@ -95,7 +95,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(Mesh3DProcrustesAlignFilter, ProcessObject);
+  itkTypeMacro(MeshProcrustesAlignFilter, ProcessObject);
 
   /** Sets the number of input meshes that have to be aligned.
   * Call this before any other methods.
@@ -277,10 +277,10 @@ public:
 protected:
 
   /** Standard constructor. */
-  Mesh3DProcrustesAlignFilter();
+  MeshProcrustesAlignFilter();
 
   /** Standard destructor. */
-  ~Mesh3DProcrustesAlignFilter();
+  ~MeshProcrustesAlignFilter();
 
   /** Performs the alignment. */
   virtual void GenerateData() ITK_OVERRIDE;
@@ -332,7 +332,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMesh3DProcrustesAlignFilter.hxx"
+#include "itkMeshProcrustesAlignFilter.hxx"
 #endif
 
-#endif //itkMesh3DProcrustesAlignFilter
+#endif //itkMeshProcrustesAlignFilter
