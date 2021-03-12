@@ -129,7 +129,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     meshIt = mesh->GetPoints()->Begin();
     for( meanIt = meanPoints->Begin(); meanIt != meanPoints->End(); ++meanIt )
       {
-      for( int dim = 0; dim < 3; dim++ )
+      for( int dim = 0; dim < MeshDimension; dim++ )
         {
         meanIt.Value()[dim] = meshIt.Value()[dim];
         }
@@ -140,7 +140,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 
   // iteratively update mean
   OutputPointType zeroPnt;
-  for( int dim = 0; dim < 3; dim++ )
+  for( int dim = 0; dim < MeshDimension; dim++ )
     {
     zeroPnt[dim] = 0;
     }
@@ -170,7 +170,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     oldMeanIt = oldMeanPoints->Begin();
     for( meanIt = meanPoints->Begin(); meanIt != meanPoints->End(); ++meanIt )
       {
-      for( int dim = 0; dim < 3; dim++ )
+      for( int dim = 0; dim < MeshDimension; dim++ )
         {
         diff = meanIt.Value()[dim] - oldMeanIt.Value()[dim];
         squaredDiff += diff * diff;
@@ -195,7 +195,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
   typename InputMeshType::PointsContainer::ConstIterator pntIt;
   for( pntIt = meshPoints->Begin(); pntIt != meshPoints->End(); ++pntIt )
     {
-    for( int dim = 0; dim < 3; dim++ )
+    for( int dim = 0; dim < MeshDimension; dim++ )
       {
       center[dim] += pntIt.Value()[dim];
       }
@@ -214,12 +214,12 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
   MatrixType       source;
   InputMeshPointer sourceMesh = this->GetInput( idx );
 
-  source.set_size( sourceMesh->GetNumberOfPoints(), 3 );
+  source.set_size( sourceMesh->GetNumberOfPoints(), MeshDimension );
   typename InputMeshType::PointsContainer::ConstIterator inputIt;
   unsigned int i = 0;
   for( inputIt = sourceMesh->GetPoints()->Begin(); inputIt != sourceMesh->GetPoints()->End(); ++inputIt )
     {
-    for( int dim = 0; dim < 3; dim++ )
+    for( int dim = 0; dim < MeshDimension; dim++ )
       {
       source[i][dim] = inputIt.Value()[dim] - m_Center[idx][dim];
       }
@@ -227,18 +227,19 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     }
   // copy target mesh coordinates to target matrix
   MatrixType target;
-  target.set_size( 3, targetMesh->GetNumberOfPoints() );
+  target.set_size( MeshDimension, targetMesh->GetNumberOfPoints() );
   typename OutputMeshType::PointsContainer::ConstIterator outputIt;
   i = 0;
   for( outputIt = targetMesh->GetPoints()->Begin(); outputIt != targetMesh->GetPoints()->End(); ++outputIt )
     {
-    for( int dim = 0; dim < 3; dim++ )
+    for( int dim = 0; dim < MeshDimension; dim++ )
       {
       target[dim][i] = outputIt.Value()[dim] - targetCenter[dim];
       }
     i++;
     }
   // do procrustes matching
+  // TODO do x1/2/3 refer to dimensions?
   MatrixType            x1 = target * source / (target.fro_norm() * source.fro_norm() );
   vnl_svd<CoordRepType> svd( x1 );
   MatrixType            postTrans = svd.V() * svd.U().transpose();
@@ -258,7 +259,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 
   // set up transformation
   typename TransformType::InputPointType center;
-  for( int dim = 0; dim < 3; dim++ )
+  for( int dim = 0; dim < MeshDimension; dim++ )
     {
     center[dim] = m_Center[idx][dim];
     }
@@ -271,9 +272,9 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     {
 
     typename TransformType::MatrixType rotMatrix;
-    for( int r = 0; r < 3; r++ )
+    for( int r = 0; r < MeshDimension; r++ )
       {
-      for( int c = 0; c < 3; c++ )
+      for( int c = 0; c < MeshDimension; c++ )
         {
         rotMatrix[r][c] = postTrans[c][r];
         }
@@ -304,7 +305,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     pntIt = transformedPoints->Begin();
     for( meanIt = meanPoints->Begin(); meanIt != meanPoints->End(); ++meanIt )
       {
-      for( int dim = 0; dim < 3; dim++ )
+      for( int dim = 0; dim < MeshDimension; dim++ )
         {
         meanIt.Value()[dim] += pntIt.Value()[dim];
         }
@@ -313,7 +314,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     }
   for( meanIt = meanPoints->Begin(); meanIt != meanPoints->End(); ++meanIt )
     {
-    for( int dim = 0; dim < 3; dim++ )
+    for( int dim = 0; dim < MeshDimension; dim++ )
       {
       meanIt.Value()[dim] /= this->GetNumberOfInputs();
       }
@@ -329,7 +330,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     double scaleFactor = 1.0 / sqrt( squaredNorm );
     for( meanIt = meanPoints->Begin(); meanIt != meanPoints->End(); ++meanIt )
       {
-      for( int dim = 0; dim < 3; dim++ )
+      for( int dim = 0; dim < MeshDimension; dim++ )
         {
         meanIt.Value()[dim] *= scaleFactor;
         }
@@ -340,7 +341,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 
   for( meanIt = meanPoints->Begin(); meanIt != meanPoints->End(); ++meanIt )
     {
-    for( int dim = 0; dim < 3; dim++ )
+    for( int dim = 0; dim < MeshDimension; dim++ )
       {
       m_MeanCenter[dim] += meanIt.Value()[dim];
       }
