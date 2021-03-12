@@ -67,6 +67,9 @@ public:
   typedef SmartPointer<Self>          Pointer;
   typedef SmartPointer<const Self>    ConstPointer;
 
+  /** Dimensionality of input and output data is assumed to be the same. */
+  static constexpr unsigned int MeshDimension = TInputMesh::PointDimension;
+
   /** Convenient typedefs. */
   typedef TInputMesh                                                         InputMeshType;
   typedef TOutputMesh                                                        OutputMeshType;
@@ -79,7 +82,7 @@ public:
   typedef DataObject::Pointer                                                DataObjectPointer;
   typedef typename OutputMeshType::CoordRepType                              CoordRepType;
   typedef vnl_matrix<CoordRepType>                                           MatrixType;
-  typedef AffineTransform<CoordRepType, 3>                                   TransformType;
+  typedef AffineTransform<CoordRepType, MeshDimension>                       TransformType;
   typedef typename TransformType::Pointer                                    TransformPointer;
   typedef TransformMeshFilter<OutputMeshType, OutputMeshType, TransformType> TransformMeshType;
   typedef typename TransformMeshType::Pointer                                TransformMeshPointer;
@@ -121,29 +124,43 @@ public:
     return m_MeshTransform[idx]->GetTransform();
   }
 
-  // bp2009
+  /** Returns euler angles for given AffineTransform */
   TranslationType GetRotationDegrees( TransformType* transform )
   {
+    Vector<CoordRepType, MeshDimension> eulerAngles = Vector<CoordRepType, MeshDimension>();
     TranslationType rotationXYZ = transform->GetTranslation();
     RotationType    rotation = transform->GetMatrix();
     double          rotX, cosY, rotY, rotZ;
 
-    rotY = (-1) * (asin(rotation(0, 2) ) ); // C++ functions need radians
-    rotY = rotY / itk::Math::pi_over_180;         // I should have degrees here
-    cosY = cos(rotY / itk::Math::pi_over_180);        // I have radians here
-    rotX = acos( (rotation(2, 2) ) / cosY);
-    rotX = rotX / itk::Math::pi_over_180; // I should have degrees here
-    rotZ = acos( (rotation(0, 0) ) / cosY);
-    rotZ = rotZ / itk::Math::pi_over_180; // I should have degrees here
-    // std::cout << rotX << std::endl;
-    // std::cout << rotY << std::endl;
-    // std::cout << rotZ << std::endl;
+    if (MeshDimension == 2) {
+        rotX = acos(rotation(1, 1)) / itk::Math::pi_over_180;
+        // TODO verify -- is rotation(0,1) c/r (bottom left) or r/c (top right)?
+        rotY = (-1) * static_cast<double>(asin(rotation(0, 1))) / itk::Math::pi_over_180;
 
-    rotationXYZ.SetElement(0, rotX);
-    rotationXYZ.SetElement(1, rotY);
-    rotationXYZ.SetElement(2, rotZ);
+        eulerAngles.SetElement(0, rotX);
+        eulerAngles.SetElement(1, rotY);
+    }
+    else if (MeshDimension == 3) {
+        // TODO verify -- is rotation(0,2) c/r (bottom left) or r/c (top right)?
+        rotY = (-1) * static_cast<double>(asin(rotation(0, 2))); // C++ functions need radians
+        rotY = rotY / itk::Math::pi_over_180;         // I should have degrees here
+        cosY = cos(rotY / itk::Math::pi_over_180);        // I have radians here
+        rotX = acos((rotation(2, 2)) / cosY);
+        rotX = rotX / itk::Math::pi_over_180; // I should have degrees here
+        rotZ = acos((rotation(0, 0)) / cosY);
+        rotZ = rotZ / itk::Math::pi_over_180; // I should have degrees here
 
-    return rotationXYZ;
+        eulerAngles.SetElement(0, rotX);
+        eulerAngles.SetElement(1, rotY);
+        eulerAngles.SetElement(2, rotZ);
+    }
+    else {
+        throw (MeshDimension < 2) ?
+            "Cannot get rotation degrees for mesh of dimensions less than 2D" :
+            "Cannot get rotation degrees for mesh of dimensions higher than 3D";
+    }
+
+    return eulerAngles;
   }
 
   /** - IO Function to get a file with the Rotation Matrix + Translational Vector. */
@@ -157,22 +174,22 @@ public:
 
     output.open("Transform.info", std::ios::out);
     output << "ROTATION MATRIX" << std::endl;
-    for( unsigned dim1 = 0; dim1 < 3; dim1++ )
+    for( unsigned dim1 = 0; dim1 < MeshDimension; dim1++ )
       {
-      for( unsigned dim2 = 0; dim2 < 3; dim2++ )
+      for( unsigned dim2 = 0; dim2 < MeshDimension; dim2++ )
         {
         output << "Position " << dim1 << " " << dim2 << " : " << rotation(dim1, dim2) << std::endl;
         }
       }
 
     output << "TRANSLATION VECTOR" << std::endl;
-    for( unsigned dim1 = 0; dim1 < 3; dim1++ )
+    for( unsigned dim1 = 0; dim1 < MeshDimension; dim1++ )
       {
       output << "Position " << dim1 << " : " << trans.GetElement(dim1) << std::endl;
       }
 
     output << "ROTATION VECTOR" << std::endl;
-    for( unsigned dim1 = 0; dim1 < 3; dim1++ )
+    for( unsigned dim1 = 0; dim1 < MeshDimension; dim1++ )
       {
       output << "Position " << dim1 << " : " << rots.GetElement(dim1) << std::endl;
       }

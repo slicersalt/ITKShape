@@ -20,7 +20,7 @@
 
 int itkMeshProcrustesAlignFilterTest(int argc, char* argv[])
 {
-    using MeshType = itk::Mesh<float, 3>;
+    using MeshType = itk::Mesh<double, 3>;
     using FilterType = itk::MeshProcrustesAlignFilter<MeshType, MeshType>;
 
     FilterType::Pointer filter = FilterType::New();
