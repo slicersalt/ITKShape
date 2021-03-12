@@ -26,10 +26,6 @@
 
 #include <fstream>
 
-#if !defined(M_PI)
-#define M_PI 3.14159265358979323846264338327950288   /* pi */
-#endif
-
 namespace itk
 {
 /** \class MeshProcrustesAlignFilter
@@ -133,12 +129,12 @@ public:
     double          rotX, cosY, rotY, rotZ;
 
     rotY = (-1) * (asin(rotation(0, 2) ) ); // C++ functions need radians
-    rotY = rotY * ( 180.0 / M_PI );         // I should have degrees here
-    cosY = cos(rotY * M_PI / 180.0);        // I have radians here
+    rotY = rotY / itk::Math::pi_over_180;         // I should have degrees here
+    cosY = cos(rotY / itk::Math::pi_over_180);        // I have radians here
     rotX = acos( (rotation(2, 2) ) / cosY);
-    rotX = rotX * ( 180.0 / M_PI ); // I should have degrees here
+    rotX = rotX / itk::Math::pi_over_180; // I should have degrees here
     rotZ = acos( (rotation(0, 0) ) / cosY);
-    rotZ = rotZ * ( 180.0 / M_PI ); // I should have degrees here
+    rotZ = rotZ / itk::Math::pi_over_180; // I should have degrees here
     // std::cout << rotX << std::endl;
     // std::cout << rotY << std::endl;
     // std::cout << rotZ << std::endl;
