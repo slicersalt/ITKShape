@@ -19,6 +19,7 @@ itk_module(Mesh3DProcrustesAlignFilter
   TEST_DEPENDS
     ITKTestKernel
     ITKMetaIO
+    ITKIOMeshBase
   DESCRIPTION
     "${DOCUMENTATION}"
   EXCLUDE_FROM_DEFAULT
