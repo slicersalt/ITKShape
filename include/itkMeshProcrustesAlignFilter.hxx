@@ -85,7 +85,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 template <class TInputMesh, class TOutputMesh>
 void
 MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
-::SetInput( unsigned int idx, InputMeshPointer mesh )
+::SetInput( unsigned int idx, InputMeshType *mesh )
 {
   this->ProcessObject::SetNthInput( idx, mesh );
   m_MeshTransform[idx]->SetInput( this->GetInput( idx ) );
@@ -207,7 +207,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
 template <class TInputMesh, class TOutputMesh>
 typename MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::TransformPointer
 MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
-::GetProcrustesMatch( unsigned int idx, OutputMeshPointer targetMesh, TranslationType targetCenter)
+::GetProcrustesMatch( unsigned int idx, OutputMeshType *targetMesh, TranslationType targetCenter)
 {
   TransformPointer result = TransformType::New();
   // copy source mesh coordinates to source matrix, translating to zero if necessary

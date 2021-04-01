@@ -101,7 +101,7 @@ public:
   using itk::ProcessObject::SetInput;
 
   /** Sets one input mesh (starting with idx=0). */
-  void SetInput( unsigned int idx, InputMeshPointer mesh );
+  void SetInput( unsigned int idx, InputMeshType *mesh );
 
   /** Returns one of the input meshes (starting with idx=0). */
   InputMeshType * GetInput( unsigned int idx )
@@ -291,7 +291,7 @@ protected:
    * zero origin by using the values in m_Center, to the given targetMesh.
    * targetMesh has to be centered at zero origin as well!
    */
-  TransformPointer GetProcrustesMatch( unsigned int idx, OutputMeshPointer targetMesh, TranslationType targetCenter );
+  TransformPointer GetProcrustesMatch( unsigned int idx, OutputMeshType *targetMesh, TranslationType targetCenter );
 
 private:
 
