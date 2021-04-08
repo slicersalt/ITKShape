@@ -144,7 +144,7 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
     {
     zeroPnt[dim] = 0;
     }
-  CoordRepType diff, squaredDiff;
+  double diff, squaredDiff;
 
   do
     {
@@ -177,9 +177,9 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>
         }
       ++oldMeanIt;
       }
-    diff = sqrt( squaredDiff );
+    m_MeanPointsDifference = sqrt( squaredDiff );
     }
-  while( diff > m_Convergence && !m_UseSingleIteration );
+  while(m_MeanPointsDifference > m_Convergence && !m_UseSingleIteration );
 }
 
 template <class TInputMesh, class TOutputMesh>

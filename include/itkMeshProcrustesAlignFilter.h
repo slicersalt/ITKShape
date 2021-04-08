@@ -270,6 +270,8 @@ public:
 
   itkSetMacro(AlignRotation, bool );
   itkGetMacro(AlignRotation, bool );
+
+  itkGetConstMacro(MeanPointsDifference, double);
 protected:
 
   /** Standard constructor. */
@@ -307,6 +309,11 @@ private:
   TranslationType   m_MeanCenter;
   /** The mean of all transformed meshes from the preceding iteration. */
   OutputMeshPointer m_OldMean;
+  /** The convergence metric from the last iteration representing
+    * RMS point distance between old and new mean meshes.
+    * Alignment has succeeded when this value is less than the
+    * convergence threshold. */
+  double m_MeanPointsDifference;
 
   /** Scaling on/off */
   bool m_UseScaling;
