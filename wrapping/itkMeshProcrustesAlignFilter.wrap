@@ -1,6 +1,9 @@
 itk_wrap_include("itkMesh.h")
 
+UNIQUE(types "${WRAP_ITK_SCALAR};D")
 itk_wrap_class("itk::MeshProcrustesAlignFilter" POINTER)
+  foreach(t ${types})
     itk_wrap_template("M${ITKM_${t}}3M${ITKM_${t}}3"
-                        "itk::Mesh< ${ITKT_D}, 3>, itk::Mesh< ${ITKT_D}, 3>")
+                        "itk::Mesh< ${ITKT_${t}}, 3>, itk::Mesh< ${ITKT_${t}}, 3>")
+  endforeach()
 itk_end_wrap_class()
