@@ -11,7 +11,7 @@ except ImportError:
     sys.exit(1)
 
 setup(
-    name='itk-mesh3dprocrustesalignfilter',
+    name='itk-shape',
     version='0.1.0',
     author='Insight Software Consortium',
     author_email='itk+community@discourse.itk.org',
@@ -43,6 +43,6 @@ setup(
     keywords='ITK InsightToolkit',
     url=r'https://itk.org/',
     install_requires=[
-        r'itk>=5.2rc2'
+        r'itk>=5.2.0'
     ]
     )
