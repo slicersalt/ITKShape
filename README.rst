@@ -1,20 +1,27 @@
-ITKMesh3DProcrustesAlignFilter
+ITKShape
 =================================
 
-.. image:: https://github.com/InsightSoftwareConsortium/ITKMesh3DProcrustesAlignFilter/workflows/Build,%20test,%20package/badge.svg
+.. image:: https://github.com/slicersalt/ITKShape/workflows/Build,%20test,%20package/badge.svg
     :alt:    Build Status
 
-.. image:: https://img.shields.io/pypi/v/itk-mesh3dprocrustesalignfilter.svg
-    :target: https://pypi.python.org/pypi/itk-mesh3dprocrustesalignfilter
+.. image:: https://img.shields.io/pypi/v/itk-shape.svg
+    :target: https://pypi.python.org/pypi/itk-shape
     :alt: PyPI Version
 
 .. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
-    :target: https://github.com/slicersalt/ITKMesh3DProcrustesAlignFilter/blob/master/LICENSE
+    :target: https://github.com/slicersalt/ITKShape/blob/master/LICENSE
     :alt: License
 
 Overview
 --------
 
-A C++ implementation of Procrustes alignment for 3D meshes.
+Shape analysis filters, e.g. Procrustes alignment for meshes.
 
 ITK external module for libraries originally developed in SPHARM-PDM 3D Slicer extension (https://github.com/NIRALUser/SPHARM-PDM).
+
+Installation
+---------------
+
+::
+
+  pip install itk-shape
