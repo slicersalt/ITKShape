@@ -29,43 +29,43 @@
 namespace itk
 {
 /** \class MeshProcrustesAlignFilter
-*   \brief Class for groupwise aligning a set of 3D meshes.
-*
-* All input meshes must have the same number of points (with corresponding
-* indices).
-* Default mode: Iterative Generalized Procrustes alignment with initialization
-* from first object
-* Option: UseInitialAverageOn/Off() Use  average structure as initialization (off by default)
-*   Only appropriate if objects are already pre-aligned
-* Option: UseSingleIterationOn/Off() Only run one iteration (off by default)
-*
-* All output meshes will be centered at the origin and scaled to
-* match a mean shape with norm 1.
-* Option: UseNormalizationOn/Off() disables normalization of scaling and centering (on by default)
-* Option: UseScalingOn/Off() disables scaling matching with Procrustes (does not disable scaling normalization of the mean shape) (on by default)
-*
-* GetTransform() can be used to query the employed transformation for each
-* input mesh.
-*
-* \author Tobias Heimann. Division Medical and Biological Informatics,
-*         German Cancer Research Center, Heidelberg, Germany.
-* change  Martin Styner, UNC support for single template and initialization with average
-* TODO: Enable/Disable Normalization of centering and scaling to origin
-* 
-* \ingroup Mesh3DProcrustesAlignFilter
-*
-*/
+ *   \brief Class for groupwise aligning a set of 3D meshes.
+ *
+ * All input meshes must have the same number of points (with corresponding
+ * indices).
+ * Default mode: Iterative Generalized Procrustes alignment with initialization
+ * from first object
+ * Option: UseInitialAverageOn/Off() Use  average structure as initialization (off by default)
+ *   Only appropriate if objects are already pre-aligned
+ * Option: UseSingleIterationOn/Off() Only run one iteration (off by default)
+ *
+ * All output meshes will be centered at the origin and scaled to
+ * match a mean shape with norm 1.
+ * Option: UseNormalizationOn/Off() disables normalization of scaling and centering (on by default)
+ * Option: UseScalingOn/Off() disables scaling matching with Procrustes (does not disable scaling normalization of the
+ * mean shape) (on by default)
+ *
+ * GetTransform() can be used to query the employed transformation for each
+ * input mesh.
+ *
+ * \author Tobias Heimann. Division Medical and Biological Informatics,
+ *         German Cancer Research Center, Heidelberg, Germany.
+ * change  Martin Styner, UNC support for single template and initialization with average
+ * TODO: Enable/Disable Normalization of centering and scaling to origin
+ *
+ * \ingroup Mesh3DProcrustesAlignFilter
+ *
+ */
 template <class TInputMesh, class TOutputMesh>
 class ITK_TEMPLATE_EXPORT MeshProcrustesAlignFilter : public ProcessObject
 {
 
 public:
-
   /** Standard typedefs. */
-  typedef MeshProcrustesAlignFilter   Self;
-  typedef ProcessObject               Superclass;
-  typedef SmartPointer<Self>          Pointer;
-  typedef SmartPointer<const Self>    ConstPointer;
+  typedef MeshProcrustesAlignFilter Self;
+  typedef ProcessObject             Superclass;
+  typedef SmartPointer<Self>        Pointer;
+  typedef SmartPointer<const Self>  ConstPointer;
 
   /** Convenient typedefs. */
   typedef TInputMesh                                                         InputMeshType;
@@ -94,46 +94,52 @@ public:
   itkTypeMacro(MeshProcrustesAlignFilter, ProcessObject);
 
   /** Sets the number of input meshes that have to be aligned.
-  * Call this before any other methods.
-  */
-  void SetNumberOfInputs( unsigned int num );
+   * Call this before any other methods.
+   */
+  void
+  SetNumberOfInputs(unsigned int num);
 
   using itk::ProcessObject::SetInput;
 
   /** Sets one input mesh (starting with idx=0). */
-  void SetInput( unsigned int idx, InputMeshType *mesh );
+  void
+  SetInput(unsigned int idx, InputMeshType * mesh);
 
   /** Returns one of the input meshes (starting with idx=0). */
-  InputMeshType * GetInput( unsigned int idx )
+  InputMeshType *
+  GetInput(unsigned int idx)
   {
-    return static_cast<InputMeshType *>(this->ProcessObject::GetInput( idx ) );
+    return static_cast<InputMeshType *>(this->ProcessObject::GetInput(idx));
   }
 
   /** Gets one transformed output mesh (starting with idx=0). */
-  OutputMeshType * GetOutput(unsigned int idx);
+  OutputMeshType *
+  GetOutput(unsigned int idx);
 
   /** Gets the transformed mean of all aligned meshes. */
-  itkGetConstObjectMacro( Mean, OutputMeshType );
+  itkGetConstObjectMacro(Mean, OutputMeshType);
 
   /** Returns the transform used to align a mesh (starting with idx=0). */
-  TransformType * GetTransform( unsigned int idx )
+  TransformType *
+  GetTransform(unsigned int idx)
   {
     return m_MeshTransform[idx]->GetTransform();
   }
 
   // bp2009
-  TranslationType GetRotationDegrees( TransformType* transform )
+  TranslationType
+  GetRotationDegrees(TransformType * transform)
   {
     TranslationType rotationXYZ = transform->GetTranslation();
     RotationType    rotation = transform->GetMatrix();
     double          rotX, cosY, rotY, rotZ;
 
-    rotY = (-1) * (asin(rotation(0, 2) ) ); // C++ functions need radians
-    rotY = rotY / itk::Math::pi_over_180;         // I should have degrees here
-    cosY = cos(rotY / itk::Math::pi_over_180);        // I have radians here
-    rotX = acos( (rotation(2, 2) ) / cosY);
+    rotY = (-1) * (asin(rotation(0, 2)));      // C++ functions need radians
+    rotY = rotY / itk::Math::pi_over_180;      // I should have degrees here
+    cosY = cos(rotY / itk::Math::pi_over_180); // I have radians here
+    rotX = acos((rotation(2, 2)) / cosY);
     rotX = rotX / itk::Math::pi_over_180; // I should have degrees here
-    rotZ = acos( (rotation(0, 0) ) / cosY);
+    rotZ = acos((rotation(0, 0)) / cosY);
     rotZ = rotZ / itk::Math::pi_over_180; // I should have degrees here
     // std::cout << rotX << std::endl;
     // std::cout << rotY << std::endl;
@@ -147,7 +153,8 @@ public:
   }
 
   /** - IO Function to get a file with the Rotation Matrix + Translational Vector. */
-  void PrintTransform( TransformType* transform )
+  void
+  PrintTransform(TransformType * transform)
   {
     TranslationType trans = transform->GetTranslation();
     TranslationType rots = GetRotationDegrees(transform);
@@ -157,25 +164,25 @@ public:
 
     output.open("Transform.info", std::ios::out);
     output << "ROTATION MATRIX" << std::endl;
-    for( unsigned dim1 = 0; dim1 < 3; dim1++ )
+    for (unsigned dim1 = 0; dim1 < 3; dim1++)
+    {
+      for (unsigned dim2 = 0; dim2 < 3; dim2++)
       {
-      for( unsigned dim2 = 0; dim2 < 3; dim2++ )
-        {
         output << "Position " << dim1 << " " << dim2 << " : " << rotation(dim1, dim2) << std::endl;
-        }
       }
+    }
 
     output << "TRANSLATION VECTOR" << std::endl;
-    for( unsigned dim1 = 0; dim1 < 3; dim1++ )
-      {
+    for (unsigned dim1 = 0; dim1 < 3; dim1++)
+    {
       output << "Position " << dim1 << " : " << trans.GetElement(dim1) << std::endl;
-      }
+    }
 
     output << "ROTATION VECTOR" << std::endl;
-    for( unsigned dim1 = 0; dim1 < 3; dim1++ )
-      {
+    for (unsigned dim1 = 0; dim1 < 3; dim1++)
+    {
       output << "Position " << dim1 << " : " << rots.GetElement(dim1) << std::endl;
-      }
+    }
 
     output.close();
   }
@@ -183,11 +190,11 @@ public:
   // bp2009
 
   /** Get/Set the convergence value that determines when the iterative
-  * calculation of alignment is stopped. The smaller the value, the higher
-  * the accuracy (the default should be sufficient for all applications).
-  */
-  itkGetConstMacro( Convergence, double );
-  itkSetMacro(Convergence, double );
+   * calculation of alignment is stopped. The smaller the value, the higher
+   * the accuracy (the default should be sufficient for all applications).
+   */
+  itkGetConstMacro(Convergence, double);
+  itkSetMacro(Convergence, double);
 
   /** Creates an ouput object. */
   using itk::ProcessObject::MakeOutput;
@@ -196,13 +203,15 @@ public:
   MakeOutput(itk::ProcessObject::DataObjectPointerArraySizeType idx) ITK_OVERRIDE;
 
   /** Normalization with Scaling on (default)*/
-  void SetUseScalingOn()
+  void
+  SetUseScalingOn()
   {
     this->SetUseScaling(true);
   }
 
   /** Normalization with Scaling off */
-  void SetUseScalingOff()
+  void
+  SetUseScalingOff()
   {
     this->SetUseScaling(false);
   }
@@ -212,13 +221,15 @@ public:
   itkGetMacro(UseScaling, bool);
 
   /** use average as reference for initialization */
-  void SetUseInitialAverageOn()
+  void
+  SetUseInitialAverageOn()
   {
     this->SetUseInitialAverage(true);
   }
 
   /** do not use average as reference for initialization. The first surface will be used instead.(default) */
-  void SetUseInitialAverageOff()
+  void
+  SetUseInitialAverageOff()
   {
     this->SetUseInitialAverage(false);
   }
@@ -228,12 +239,14 @@ public:
   itkGetMacro(UseInitialAverage, bool);
 
   /** Set/Get whether or not the centering and Scaling to a shape with norm 1 is performed */
-  void SetUseNormalizationOn()
+  void
+  SetUseNormalizationOn()
   {
     this->SetUseNormalization(true);
   }
 
-  void SetUseNormalizationOff()
+  void
+  SetUseNormalizationOff()
   {
     this->SetUseNormalization(false);
   }
@@ -242,13 +255,15 @@ public:
   itkGetMacro(UseNormalization, bool);
 
   /** Only do one iteration */
-  void SetUseSingleIterationOn()
+  void
+  SetUseSingleIterationOn()
   {
     this->SetUseSingleIteration(true);
   }
 
   /** Iterate until convergence (default)*/
-  void SetUseSingleIterationOff()
+  void
+  SetUseSingleIterationOff()
   {
     this->SetUseSingleIteration(false);
   }
@@ -258,22 +273,24 @@ public:
   itkGetMacro(UseSingleIteration, bool);
 
   /** Set/Get wheter rotation should be performed or not */
-  void SetAlignRotationOn()
+  void
+  SetAlignRotationOn()
   {
     this->SetAlignRotation(true);
   }
 
-  void SetAlignRotationOff()
+  void
+  SetAlignRotationOff()
   {
     this->SetAlignRotation(false);
   }
 
-  itkSetMacro(AlignRotation, bool );
-  itkGetMacro(AlignRotation, bool );
+  itkSetMacro(AlignRotation, bool);
+  itkGetMacro(AlignRotation, bool);
 
   itkGetConstMacro(MeanPointsDifference, double);
-protected:
 
+protected:
   /** Standard constructor. */
   MeshProcrustesAlignFilter();
 
@@ -281,24 +298,27 @@ protected:
   ~MeshProcrustesAlignFilter();
 
   /** Performs the alignment. */
-  virtual void GenerateData() ITK_OVERRIDE;
+  virtual void
+  GenerateData() ITK_OVERRIDE;
 
   /** Calculates the center coordinates of the specified input mesh. */
-  TranslationType GetMeshCenter( unsigned int idx );
+  TranslationType
+  GetMeshCenter(unsigned int idx);
 
   /** Uses the current transformations to calculate a new mean.*/
-  void CalculateMean();
+  void
+  CalculateMean();
 
   /** Returns the best transform to fit input mesh idx, translated to
    * zero origin by using the values in m_Center, to the given targetMesh.
    * targetMesh has to be centered at zero origin as well!
    */
-  TransformPointer GetProcrustesMatch( unsigned int idx, OutputMeshType *targetMesh, TranslationType targetCenter );
+  TransformPointer
+  GetProcrustesMatch(unsigned int idx, OutputMeshType * targetMesh, TranslationType targetCenter);
 
 private:
-
   /** When the difference between two consecutive mean calculations gets
-  * samller than m_Convergence, the alignment is terminated. */
+   * samller than m_Convergence, the alignment is terminated. */
   double m_Convergence;
   /** Holds the transforms for all input meshes.*/
   TransformMeshArray m_MeshTransform;
@@ -310,9 +330,9 @@ private:
   /** The mean of all transformed meshes from the preceding iteration. */
   OutputMeshPointer m_OldMean;
   /** The convergence metric from the last iteration representing
-    * RMS point distance between old and new mean meshes.
-    * Alignment has succeeded when this value is less than the
-    * convergence threshold. */
+   * RMS point distance between old and new mean meshes.
+   * Alignment has succeeded when this value is less than the
+   * convergence threshold. */
   double m_MeanPointsDifference;
 
   /** Scaling on/off */
@@ -329,13 +349,12 @@ private:
 
   /** Perform rotation on/off */
   bool m_AlignRotation;
-
 };
 
-}
+} // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMeshProcrustesAlignFilter.hxx"
+#  include "itkMeshProcrustesAlignFilter.hxx"
 #endif
 
-#endif //itkMeshProcrustesAlignFilter
+#endif // itkMeshProcrustesAlignFilter
