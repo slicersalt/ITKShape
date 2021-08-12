@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10.2)
-project(Mesh3DProcrustesAlignFilter)
+project(ITKShape)
 
 if(NOT ITK_SOURCE_DIR)
   find_package(ITK REQUIRED)

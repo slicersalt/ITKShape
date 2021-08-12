@@ -53,7 +53,7 @@ namespace itk
  * change  Martin Styner, UNC support for single template and initialization with average
  * TODO: Enable/Disable Normalization of centering and scaling to origin
  *
- * \ingroup Mesh3DProcrustesAlignFilter
+ * \ingroup ITKShape
  *
  */
 template <class TInputMesh, class TOutputMesh>
