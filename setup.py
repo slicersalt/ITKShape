@@ -17,7 +17,7 @@ setup(
     author_email='itk+community@discourse.itk.org',
     packages=['itk'],
     package_dir={'itk': 'itk'},
-    download_url=r'https://github.com/slicersalt/ITKMesh3DProcrustesAlignFilter',
+    download_url=r'https://github.com/slicersalt/ITKShape',
     description=r'A C++ implementation of Procrustes alignment for 3D meshes.',
     long_description='ITK external module for libraries originally developed in SPHARM-PDM 3D Slicer extension (https://github.com/NIRALUser/SPHARM-PDM).',
     classifiers=[
