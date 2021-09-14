@@ -53,7 +53,7 @@ namespace itk
  * change  Martin Styner, UNC support for single template and initialization with average
  * TODO: Enable/Disable Normalization of centering and scaling to origin
  *
- * \ingroup Mesh3DProcrustesAlignFilter
+ * \ingroup Shape
  *
  */
 template <class TInputMesh, class TOutputMesh>
@@ -79,7 +79,7 @@ public:
   typedef DataObject::Pointer                                                DataObjectPointer;
   typedef typename OutputMeshType::CoordRepType                              CoordRepType;
   typedef vnl_matrix<CoordRepType>                                           MatrixType;
-  typedef AffineTransform<CoordRepType, 3>                                   TransformType;
+  typedef AffineTransform<double, 3>                                         TransformType;
   typedef typename TransformType::Pointer                                    TransformPointer;
   typedef TransformMeshFilter<OutputMeshType, OutputMeshType, TransformType> TransformMeshType;
   typedef typename TransformMeshType::Pointer                                TransformMeshPointer;
