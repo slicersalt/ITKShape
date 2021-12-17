@@ -19,7 +19,6 @@
 #ifndef itkMeshProcrustesAlignFilter_hxx
 #define itkMeshProcrustesAlignFilter_hxx
 
-#include "itkMeshProcrustesAlignFilter.h"
 
 namespace itk
 {
