@@ -200,7 +200,7 @@ public:
   using itk::ProcessObject::MakeOutput;
 
   virtual itk::ProcessObject::DataObjectPointer
-  MakeOutput(itk::ProcessObject::DataObjectPointerArraySizeType idx) ITK_OVERRIDE;
+  MakeOutput(itk::ProcessObject::DataObjectPointerArraySizeType idx) override;
 
   /** Normalization with Scaling on (default)*/
   void
@@ -299,7 +299,7 @@ protected:
 
   /** Performs the alignment. */
   virtual void
-  GenerateData() ITK_OVERRIDE;
+  GenerateData() override;
 
   /** Calculates the center coordinates of the specified input mesh. */
   TranslationType
