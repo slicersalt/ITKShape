@@ -91,7 +91,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(MeshProcrustesAlignFilter, ProcessObject);
+  itkOverrideGetNameOfClassMacro(MeshProcrustesAlignFilter);
 
   /** Sets the number of input meshes that have to be aligned.
    * Call this before any other methods.
