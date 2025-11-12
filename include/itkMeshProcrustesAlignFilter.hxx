@@ -42,7 +42,8 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::~MeshProcrustesAlignFilter()
 {}
 
 template <class TInputMesh, class TOutputMesh>
-typename itk::ProcessObject::DataObjectPointer MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::MakeOutput(
+typename itk::ProcessObject::DataObjectPointer
+MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::MakeOutput(
   itk::ProcessObject::DataObjectPointerArraySizeType /* idx */)
 {
   return static_cast<itk::ProcessObject::DataObjectPointer>(TOutputMesh::New().GetPointer());
