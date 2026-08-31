@@ -79,8 +79,9 @@ public:
   typedef typename OutputMeshType::PointsContainer                           OutputPointsContainer;
   typedef typename OutputMeshType::PointsContainerPointer                    OutputPointsContainerPointer;
   typedef DataObject::Pointer                                                DataObjectPointer;
-  typedef typename OutputPointType::ValueType                                CoordRepType;
-  typedef vnl_matrix<CoordRepType>                                           MatrixType;
+  typedef typename OutputPointType::ValueType                                CoordinateType;
+  typedef CoordinateType                                                     CoordRepType;
+  typedef vnl_matrix<CoordinateType>                                         MatrixType;
   typedef AffineTransform<double, 3>                                         TransformType;
   typedef typename TransformType::Pointer                                    TransformPointer;
   typedef TransformMeshFilter<OutputMeshType, OutputMeshType, TransformType> TransformMeshType;

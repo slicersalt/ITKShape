@@ -233,22 +233,22 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::GetProcrustesMatch(unsigned 
     i++;
   }
   // do procrustes matching
-  MatrixType            x1 = target * source / (target.fro_norm() * source.fro_norm());
-  vnl_svd<CoordRepType> svd(x1);
-  MatrixType            postTrans = svd.V() * svd.U().transpose();
-  MatrixType            x2 = target * source * postTrans;
-  CoordRepType          x2Trace = 0;
+  MatrixType              x1 = target * source / (target.fro_norm() * source.fro_norm());
+  vnl_svd<CoordinateType> svd(x1);
+  MatrixType              postTrans = svd.V() * svd.U().transpose();
+  MatrixType              x2 = target * source * postTrans;
+  CoordinateType          x2Trace = 0;
   for (unsigned int i_ = 0; i_ < x2.rows(); i_++)
   {
     x2Trace += x2[i_][i_];
   }
-  MatrixType   x3 = source.transpose() * source;
-  CoordRepType x3Trace = 0;
+  MatrixType     x3 = source.transpose() * source;
+  CoordinateType x3Trace = 0;
   for (unsigned int i_ = 0; i_ < x3.rows(); i_++)
   {
     x3Trace += x3[i_][i_];
   }
-  CoordRepType scale = x2Trace / x3Trace;
+  CoordinateType scale = x2Trace / x3Trace;
 
   // set up transformation
   typename TransformType::InputPointType center;
