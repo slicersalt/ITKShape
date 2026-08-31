@@ -21,7 +21,11 @@
 
 #include "itkMeshProcrustesAlignFilter.h"
 
-#include "vnl/algo/vnl_svd.h"
+#if __has_include("itkBridgeMathSVD.h")
+#  include "itkBridgeMathSVD.h"
+#else
+#  include "vnl/algo/vnl_svd.h"
+#endif
 
 namespace itk
 {
@@ -233,11 +237,16 @@ MeshProcrustesAlignFilter<TInputMesh, TOutputMesh>::GetProcrustesMatch(unsigned 
     i++;
   }
   // do procrustes matching
-  MatrixType              x1 = target * source / (target.fro_norm() * source.fro_norm());
+  MatrixType x1 = target * source / (target.fro_norm() * source.fro_norm());
+#if __has_include("itkBridgeMathSVD.h")
+  const auto svd = itk::bridge::Math::SVD(x1);
+  MatrixType postTrans = svd.V * svd.U.transpose();
+#else
   vnl_svd<CoordinateType> svd(x1);
   MatrixType              postTrans = svd.V() * svd.U().transpose();
-  MatrixType              x2 = target * source * postTrans;
-  CoordinateType          x2Trace = 0;
+#endif
+  MatrixType     x2 = target * source * postTrans;
+  CoordinateType x2Trace = 0;
   for (unsigned int i_ = 0; i_ < x2.rows(); i_++)
   {
     x2Trace += x2[i_][i_];
