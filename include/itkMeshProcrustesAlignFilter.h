@@ -126,7 +126,7 @@ public:
   TransformType *
   GetTransform(unsigned int idx)
   {
-    return m_MeshTransform[idx]->GetTransform();
+    return m_MeshTransform[idx]->GetModifiableTransform();
   }
 
   // bp2009
