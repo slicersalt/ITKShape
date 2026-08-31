@@ -19,6 +19,9 @@
 #ifndef itkMeshProcrustesAlignFilter_hxx
 #define itkMeshProcrustesAlignFilter_hxx
 
+#include "itkMeshProcrustesAlignFilter.h"
+
+#include "vnl/algo/vnl_svd.h"
 
 namespace itk
 {

@@ -24,6 +24,8 @@
 #include "itkAffineTransform.h"
 #include "itkTransformMeshFilter.h"
 
+#include "vnl/vnl_matrix.h"
+
 #include <fstream>
 
 namespace itk
@@ -77,7 +79,7 @@ public:
   typedef typename OutputMeshType::PointsContainer                           OutputPointsContainer;
   typedef typename OutputMeshType::PointsContainerPointer                    OutputPointsContainerPointer;
   typedef DataObject::Pointer                                                DataObjectPointer;
-  typedef typename OutputMeshType::CoordRepType                              CoordRepType;
+  typedef typename OutputPointType::ValueType                                CoordRepType;
   typedef vnl_matrix<CoordRepType>                                           MatrixType;
   typedef AffineTransform<double, 3>                                         TransformType;
   typedef typename TransformType::Pointer                                    TransformPointer;
