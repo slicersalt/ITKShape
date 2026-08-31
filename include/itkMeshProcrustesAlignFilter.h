@@ -24,6 +24,8 @@
 #include "itkAffineTransform.h"
 #include "itkTransformMeshFilter.h"
 
+#include "vnl/vnl_matrix.h"
+
 #include <fstream>
 
 namespace itk
@@ -77,8 +79,9 @@ public:
   typedef typename OutputMeshType::PointsContainer                           OutputPointsContainer;
   typedef typename OutputMeshType::PointsContainerPointer                    OutputPointsContainerPointer;
   typedef DataObject::Pointer                                                DataObjectPointer;
-  typedef typename OutputMeshType::CoordRepType                              CoordRepType;
-  typedef vnl_matrix<CoordRepType>                                           MatrixType;
+  typedef typename OutputPointType::ValueType                                CoordinateType;
+  typedef CoordinateType                                                     CoordRepType;
+  typedef vnl_matrix<CoordinateType>                                         MatrixType;
   typedef AffineTransform<double, 3>                                         TransformType;
   typedef typename TransformType::Pointer                                    TransformPointer;
   typedef TransformMeshFilter<OutputMeshType, OutputMeshType, TransformType> TransformMeshType;
@@ -123,12 +126,12 @@ public:
   TransformType *
   GetTransform(unsigned int idx)
   {
-    return m_MeshTransform[idx]->GetTransform();
+    return m_MeshTransform[idx]->GetModifiableTransform();
   }
 
   // bp2009
   TranslationType
-  GetRotationDegrees(TransformType * transform)
+  GetRotationDegrees(const TransformType * transform)
   {
     TranslationType rotationXYZ = transform->GetTranslation();
     RotationType    rotation = transform->GetMatrix();
@@ -154,7 +157,7 @@ public:
 
   /** - IO Function to get a file with the Rotation Matrix + Translational Vector. */
   void
-  PrintTransform(TransformType * transform)
+  PrintTransform(const TransformType * transform)
   {
     TranslationType trans = transform->GetTranslation();
     TranslationType rots = GetRotationDegrees(transform);
