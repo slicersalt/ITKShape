@@ -131,7 +131,7 @@ public:
 
   // bp2009
   TranslationType
-  GetRotationDegrees(TransformType * transform)
+  GetRotationDegrees(const TransformType * transform)
   {
     TranslationType rotationXYZ = transform->GetTranslation();
     RotationType    rotation = transform->GetMatrix();
@@ -157,7 +157,7 @@ public:
 
   /** - IO Function to get a file with the Rotation Matrix + Translational Vector. */
   void
-  PrintTransform(TransformType * transform)
+  PrintTransform(const TransformType * transform)
   {
     TranslationType trans = transform->GetTranslation();
     TranslationType rots = GetRotationDegrees(transform);
